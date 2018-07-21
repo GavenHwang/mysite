@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load article_tags %}
+{% load article_tags %}
+{% block title %}articles{% endblock %}
+{% block content %}
+    <div class="row text-center vertical-middle-sm">
+        <h1>Welcome to GavenHwang's Blogs</h1>
+        <P>Total Blogs {% total_articles %}</P>
+    </div>
+    <div class="container">
+        <link rel="stylesheet" href="{% static 'css/mansory-style.css' %}" type="text/css"/>
+        <div class="col-md-9">
+            <div id="my-gallery-container">
+                {% for article in articles %}
+                    <div class="falls_item h220" data-order="{{ article.id }}">
+                        <div class="list-group">
+                            <div class="list-group-item active">
+                                <h4 class="list-group-item-heading">
+                                    <a href="{{ article.get_url_path }}" style="color: white;">标题：{{ article.title }}</a>
+                                </h4>
+                                <p class="list-group-item-text">
+                                    作者：<a href="{% url 'article:author_articles' article.author.username %}"
+                                          style="color: white;">{{ article.author.username }}</a>
+                                    &ensp;
+                                    概要：
+{{ article.body | markdown | slice:'20' }}
+                                    {% comment %}概要：{{ article.body | slice:'20' | linebreaks }}{% endcomment %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% comment %}<div class="text-right">{% include 'paginator.html' %}</div>{% endcomment %}
+        </div>
+        <div class="col-md-3">
+            <div>
+            <img src="{% static 'images/timg.jpg' %}" class="img-circle" width="100%">
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/mp.mansory.min.js' %}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $("#my-gallery-container").mpmansory({
+                childrenClass: "falls_item",    // default is a div
+                columnClass: "falls_padding",   // add classes to items
+                breakpoints:{
+                    lg: 3,
+                    md: 4,
+                    sm: 6,
+                    xs: 12
+                },
+                distributeBy: {
+                    order: false,
+                    heright: false,
+                    attr: 'data-order',
+                    attrOrder: 'desc',
+                }
+            });
+        })
+    </script>
+{% endblock %}

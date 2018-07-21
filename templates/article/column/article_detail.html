@@ -1,0 +1,48 @@
+{% extends "article/base.html" %}
+{% load article_tags %}
+{% load staticfiles %}
+{% block title %}articles list{% endblock %}
+{% block content %}
+    <div>
+        <header>
+            <h1 class="text-center">{{ article.title }}</h1>
+            <p>
+                <span class="col-sm-9">
+                    <strong>Tag:</strong>
+                    {{ article.article_tag.all | join:", " }}
+                </span>
+                <span class="col-sm-3">
+                    {{ user.username }}
+                </span>
+            </p>
+        </header>
+        <link rel="stylesheet" href="{% static 'editor/css/editormd.preview.css' %}"/>
+        <div id="editormd-view">
+        <textarea id="append-test" style="display: none">
+{{ article.body | markdown }}<!--前不能有空格，否则格式会不正确-->
+        </textarea>
+        </div>
+    </div>
+    <script src='{% static "js/jquery.js" %}'></script>
+    <script src='{% static "editor/lib/marked.min.js" %}'></script>
+    <script src='{% static "editor/lib/prettify.min.js" %}'></script>
+    <script src='{% static "editor/lib/raphael.min.js" %}'></script>
+    <script src='{% static "editor/lib/underscore.min.js" %}'></script>
+    <script src='{% static "editor/lib/sequence-diagram.min.js" %}'></script>
+    <script src='{% static "editor/lib/flowchart.min.js" %}'></script>
+    <script src='{% static "editor/lib/jquery.flowchart.min.js" %}'></script>
+    <script src='{% static "editor/editormd.js" %}'></script>
+
+    <script type="text/javascript">
+        $(function () {
+            editormd.markdownToHTML("editormd-view", {
+                htmlDecode: "style,script,iframe",  // you can filter tags decode
+                emoji: true,
+                taskList: true,
+                tex: true,  // 默认不解析
+                flowChart: true,  // 默认不解析
+                sequenceDiagram: true,  // 默认不解析
+            });
+        });
+    </script>
+{% endblock %}

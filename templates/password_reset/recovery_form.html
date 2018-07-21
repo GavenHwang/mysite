@@ -1,0 +1,18 @@
+{% extends "password_reset/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Password recovery" %}{% endblock %}
+
+{% block content %}
+    <div class="row text-center vertical-middle-sm">
+        <h1>Forgotten your password? Reset, please.</h1>
+        <p>Enter your email or username to set a new password.</p>
+        <form class="form-horizontal" method="post" action="{{ url }}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="submit-row">
+                <p><input type="submit" value="{% trans "Recover my password" %}" class="btn btn-primary btn-lg"></p>
+            </div>
+        </form>
+    </div>
+{% endblock %}

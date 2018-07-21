@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}编辑我的个人信息{% endblock %}
+{% block content %}
+    <div class="row text-center vertical-middle-sm">
+        <h1>编辑我的个人信息</h1>
+        <form class="form-horizontal" action="." method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-8">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ user.username.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-user"/>
+                            用&ensp;户&ensp;名：
+                        </label>
+
+                        <div class="col-md-8 text-left">{{ user.username }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ user_form.email.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-envelope"/>
+                            邮&emsp;&emsp;箱：
+                        </label>
+                        <div class="col-md-8 text-left">{{ user_form.email }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ userprofile_form.birth.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-time"/>
+                            生&emsp;&emsp;日：
+                        </label>
+                        <div class="col-md-8 text-left">{{ userprofile_form.birth }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ userprofile_form.phone.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-headphones"/>
+                            电&emsp;&emsp;话：
+                        </label>
+                        <div class="col-md-8 text-left">{{ userprofile_form.phone }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ userinfo_form.school.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-home"/>
+                            毕业学校：
+                        </label>
+                        <div class="col-md-8 text-left">{{ userinfo_form.school }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ userinfo_form.company.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-tasks"/>
+                            工作单位：
+                        </label>
+                        <div class="col-md-8 text-left">{{ userinfo_form.company }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ userinfo_form.profession.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-pencil"/>
+                            职&emsp;&emsp;业：
+                        </label>
+                        <div class="col-md-8 text-left">{{ userinfo_form.profession }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ userinfo_form.address.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-home"/>
+                            地&emsp;&emsp;址：
+                        </label>
+                        <div class="col-md-8 text-left">{{ userinfo_form.address }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ userinfo_form.aboutme.id_for_label }}" class="col-md-4 control-label" style="padding: 0px;">
+                            <span class="glyphicon glyphicon-info-sign"/>
+                            个人介绍：
+                        </label>
+                        <div class="col-md-8 text-left">{{ userinfo_form.aboutme }}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div style="margin-right: 100px;">
+                        {% if userinfo_form.photo %}
+                            <!-- striptags 删除value中的所有HTML标签 -->
+                            <img src="{{ userinfo_form.photo | striptags }}" class="img-circle" id="my_photo" name="user_face" onclick="upload_image_layer()"/>
+                        {% else %}
+                            <img name="user_face" src="{% static 'images/user.jpg' %}" class="img-circle" width="270px" id="my_photo" onclick="upload_image_layer()"/>
+                        {% endif %}
+                    </div>
+                    <div style="margin-right:100px;">
+                        <a class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">上传头像</a>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary btn-lg" value="确认修改">
+            <a href="{% url 'account:my_information' %}"><button class="btn btn-primary btn-lg">取消</button></a>
+        </form>
+    </div>
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+    <script>
+        function upload_image_layer() {
+            layer.open({
+                title: "上传头像",
+                area: ['900px', '600px'],
+                type: 2,
+                content: "{% url 'account:my_image' %}",
+            });
+        }
+    </script>
+{% endblock %}
